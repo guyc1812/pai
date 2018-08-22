@@ -38,19 +38,26 @@ function debug_log()
 function exit_handler()
 {
   local handler="Yarn container exit handler"
+  local if_cgroup_oom=0
   debug_log "$handler"  "EXIT signal received in yarn container, performing clean up action..."
 
   debug_log "$handler" "trying to kill docker container $docker_name"
-  pid=$(docker inspect --format={{{ inspectFormat }}} $docker_name 2>/dev/null)
+  pid=$(docker inspect --format={{{ inspectPidFormat }}} $docker_name 2>/dev/null)
   if [ $pid ]; then
     kill -9 $pid &&\
       debug_log "$handler" "docker caontainer $docker_name killed successfully." ||\
       debug_log "$handler" "tries to kill the container $docker_name but failed. Maybe it has already exited."
   else
     debug_log "$handler" "docker container $docker_name has already exited"
+    is_oom=$(docker inspect --format={{{ inspectOOMKilledFormat }}} $docker_name 2>/dev/null)
+    debug_log "$handler" "docker container $docker_name is exited by OOM? $is_oom"
+    if [ $is_oom -eq "true" ]; then
+      is_cgroup_oom=$(dmesg | grep "Memory cgroup out of memory: Kill $docker_pid")
+    fi
   fi
 
-  kill 0
+  pkill --parent $$
+  [ -n $is_cgroup_oom ] && exit 206
 }
 
 set -x
@@ -238,7 +245,7 @@ container_local_dir=$mounted_path/nm-local-dir/usercache/{{{ jobData.userName }}
 docker pull {{{ jobData.image }}} \
   || { echo "Can not pull Docker image"; exit 1; }
 docker run --name $docker_name \
-  --rm \
+  --detach \
   --tty \
   --privileged=false \
   --cap-add=SYS_ADMIN \
@@ -264,3 +271,8 @@ docker run --name $docker_name \
   --env-file $ENV_LIST \
   --entrypoint '/bin/bash' {{{ jobData.image }}} \
   '/pai/bootstrap/docker_bootstrap.sh'
+docker_pid=$(docker inspect --format "{{{ inspectPidFormat }}}" $docker_name)
+
+echo "Docker container pid is $docker_pid"
+
+docker attach $docker_name
