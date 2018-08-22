@@ -56,6 +56,7 @@ function exit_handler()
     fi
   fi
 
+  docker container rm $docker_name
   pkill --parent $$
   [ -n $is_cgroup_oom ] && exit 206
 }
