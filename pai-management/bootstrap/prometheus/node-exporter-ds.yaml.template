@@ -45,6 +45,7 @@ spec:
         resources:
           limits:
             memory: "1Gi"
+            cpu: "100m"
         volumeMounts:
         - mountPath: /datastorage/prometheus
           name: collector-mount
@@ -96,6 +97,7 @@ spec:
         resources:
           limits:
             memory: "1Gi"
+            cpu: "100m"
         securityContext:
           privileged: true
         volumeMounts:
