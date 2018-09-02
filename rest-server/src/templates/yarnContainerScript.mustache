@@ -38,10 +38,11 @@ function debug_log()
 function exit_handler()
 {
   local handler="Yarn container exit handler"
-  local if_cgroup_oom=0
+  local if_cgroup_oom=""
   debug_log "$handler"  "EXIT signal received in yarn container, performing clean up action..."
 
   debug_log "$handler" "trying to kill docker container $docker_name"
+  docker inspect $docker_name
   pid=$(docker inspect --format={{{ inspectPidFormat }}} $docker_name 2>/dev/null)
   if [ $pid ]; then
     kill -9 $pid &&\
@@ -58,7 +59,7 @@ function exit_handler()
 
   docker container rm $docker_name
   pkill --parent $$
-  [ -n $is_cgroup_oom ] && exit 206
+  [ -n "$is_cgroup_oom" ] && exit 206
 }
 
 set -x
