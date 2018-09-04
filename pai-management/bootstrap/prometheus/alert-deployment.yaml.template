@@ -51,11 +51,16 @@ spec:
         volumeMounts:
         - name: config-volume
           mountPath: /etc/alertmanager
+        - name: templates-volume
+          mountPath: /etc/alertmanager/template
         - name: alertmanager
           mountPath: /alertmanager
       volumes:
       - name: config-volume
         configMap:
           name: alertmanager
+      - name: templates-volume
+        configMap:
+          name: alert-templates
       - name: alertmanager
         emptyDir: {}

@@ -19,15 +19,17 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-INSTANCES="daemonset/node-exporter
+INSTANCES="
+deployment/alertmanager
+configmap/alertmanager
+configmap/alert-templates
 daemonset/watchdog
 deployment/watchdog
+configmap/watchdog
 deployment/prometheus-deployment
 configmap/prometheus-configmap
 configmap/prometheus-alert
-configmap/watchdog
-deployment/alertmanager
-configmap/alertmanager
+daemonset/node-exporter
 "
 
 for instance in ${INSTANCES}; do

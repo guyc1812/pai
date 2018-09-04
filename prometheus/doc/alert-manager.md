@@ -47,6 +47,9 @@ Following are these rule's triggering condition:
 | PaiServicePodNotRunning | kubernetes indicate one of pai service pod is not in running status |
 | PaiServicePodNotReady | kubernetes indicate one of pai service pod is not in ready status |
 
+Our email template is similar to original Alert Manager's, except We only render annotation.summary
+if the key exist. This can make alert email simpler to read and understand.
+
 If you want to add more rules, please reference syntax
 [here](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/).
 After adding rules, you should stop and start prometheus by using paictl
