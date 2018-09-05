@@ -22,7 +22,7 @@
 {% set port = 9093 %}
 {% endif %}
 
-{% set host = clusterinfo['prometheusinfo']['alerting']['alert-manager-hosts'][0] %}
+{% set host = clusterinfo['prometheusinfo']['alerting']['alert-manager-hosts'] %}
 
 apiVersion: apps/v1
 kind: Deployment

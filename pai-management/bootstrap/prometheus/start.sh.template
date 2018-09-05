@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 {% set prom_info = clusterinfo['prometheusinfo'] %}
-{% set has_alert_manager = 'alerting' in prom_info and prom_info['alerting']['alert-manager-hosts']|length > 0 %}
+{% set has_alert_manager = 'alerting' in prom_info %}
 
 pushd $(dirname "$0") > /dev/null
 

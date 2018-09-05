@@ -4,10 +4,8 @@ release.
 
 # Configuration
 
-To enable Alert Manager, follow the following steps:
-* select a node to deploy Alert Manager, both master and work node can be used as Alter Manager.
-* in `cluster-configuration` file, set `alert-manager: "true"` for this node.
-* configure Alert Manager by adding `alerting` fields under `prometheus` to services-configuration file.
+To enable Alert Manager, please configure Alert Manager by adding `alerting` fields under `prometheus`
+to services-configuration file.
 
 Refer to example [`cluster-configuration`](../../cluster-configuration/cluster-configuration.yaml) and
 [`service-configuration`](../../cluster-configuration/services-configuration.yaml) for more
