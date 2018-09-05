@@ -22,6 +22,8 @@
 {% set port = 9093 %}
 {% endif %}
 
+{% set host = clusterinfo['prometheusinfo']['alerting']['alert-manager-hosts'][0] %}
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -45,6 +47,7 @@ spec:
         args:
           - '--config.file=/etc/alertmanager/config.yml'
           - '--storage.path=/alertmanager'
+          - '--web.external-url=http://{{host}}:{{port}}'
         ports:
         - name: alertmanager
           containerPort: {{ port }}
