@@ -37,6 +37,7 @@ function debug_log()
 
 function exit_handler()
 {
+  echo "Exited with $?"
   local handler="Yarn container exit handler"
   local if_cgroup_oom=""
   debug_log "$handler"  "EXIT signal received in yarn container, performing clean up action..."
@@ -279,3 +280,5 @@ docker_pid=$(docker inspect --format "{{{ inspectPidFormat }}}" $docker_name)
 echo "Docker container pid is $docker_pid"
 
 docker attach $docker_name
+
+echo "Docker attach exited with $?"
